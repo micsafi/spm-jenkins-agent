@@ -77,7 +77,7 @@ parameters:
     description:
       The build image which this build pod will extend to create it's new
       build pod type.
-    value: registry.access.redhat.com/openshift3/jenkins-slave-base-rhel7
+    value: registry.access.redhat.com/openshift3/jenkins-slave-base-rhel7:v3.4
   - name: SLAVE_IMAGE_TAG
     displayName: Image tag for Jenkins slave.
     description: This is the image tag used for the Jenkins slave.
