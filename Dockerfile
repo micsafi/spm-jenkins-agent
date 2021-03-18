@@ -15,6 +15,7 @@ FROM quay.io/openshift/origin-jenkins-agent-base:4.5
 #     alternatives --auto java
 
 ENV ANT_VERSION=1.10.6
+ENV ANT_HOME=/opt/ant/apache-ant-${ANT_VERSION}
 ENV JDK_DOWNLOAD_URL=https://javadl.oracle.com/webapps/download/GetFile/1.8.0_281-b09/89d678f2be164786b292527658ca1605/linux-i586/jdk-8u281-linux-x64.tar.gz
 ENV JDK_PACKAGE_FILENAME=jdk-8u281-linux-x64.tar.gz
 ENV JDK_DIR=jdk1.8.0_281
