@@ -1,3 +1,6 @@
+
+FROM websphere-liberty:20.0.0.9-full-java8-ibmjava AS liberty
+
 FROM quay.io/openshift/origin-jenkins-agent-base:4.5
 
 # ENV GRADLE_VERSION=6.3
@@ -20,6 +23,8 @@ ENV JDK_DOWNLOAD_URL=https://javadl.oracle.com/webapps/download/GetFile/1.8.0_28
 ENV JDK_PACKAGE_FILENAME=jdk-8u281-linux-x64.tar.gz
 ENV JDK_DIR=jdk1.8.0_281
 ENV JAVA_HOME=/opt/java/${JDK_DIR}
+ENV WLP_HOME=/opt/ibm/wlp
+ENV J2EE_JAR=${WLP_HOME}/lib/com.ibm.ws.javaee.platform.v8_1.0.44.jar
 
 # Install Ant
 RUN curl -sKL -o /tmp/ant-bin.zip https://archive.apache.org/dist/ant/binaries/apache-ant-${ANT_VERSION}-bin.zip && \
@@ -40,9 +45,23 @@ RUN wget --no-cookies --no-check-certificate -O /tmp/${JDK_PACKAGE_FILENAME} --h
     chmod -R g+rw /opt/java
 
 # Install needed libraries (J2EE_JAR etc)
-RUN mkdir -p /opt/lib
-COPY lib/*.jar /opt/lib/
-RUN chown -R 1001:0 /opt/lib && \
-    chmod -R g+rw /opt/lib
+# RUN mkdir -p /opt/lib
+# COPY lib/*.jar /opt/lib/
+# RUN chown -R 1001:0 /opt/lib && \
+#     chmod -R g+rw /opt/lib
+
+# COPY lib/wlp-javaee8-20.0.0.9.zip /tmp
+# RUN mkdir -p /opt/WebSphere && \
+#     unzip /tmp/wlp-javaee8-20.0.0.9.zip -d /opt/WebSphere && \
+#     rm -rf /tmp/wlp-javaee8-20.0.0.9.zip && \
+#     chown -R 1001:0 /opt/WebSphere && \
+#     chmod -R g+rw /opt/WebSphere
+
+# Install Liberty
+RUN mkdir -p /opt/ibm/wlp
+COPY --from=liberty /opt/ibm/wlp /opt/ibm/wlp
+RUN chown -R 1001:0 /opt/ibm && \
+    chmod -R g+rw /opt/ibm
+
 
 USER 1001
