@@ -38,4 +38,10 @@ RUN wget --no-cookies --no-check-certificate -O /tmp/${JDK_PACKAGE_FILENAME} --h
     chown -R 1001:0 /opt/java && \
     chmod -R g+rw /opt/java
 
+# Install needed libraries (J2EE_JAR etc)
+RUN mkdir -p /opt/lib
+COPY lib/*.jar /opt/lib/
+RUN chown -R 1001:0 /opt/lib && \
+    chmod -R g+rw /opt/lib
+
 USER 1001
